@@ -17,49 +17,58 @@ pygame.display.set_caption('Snake')
 #Frame rate
 clock= pygame.time.Clock()
 
-#Background
-bg=pygame.image.load('C:\\Users\\18597\\Desktop\\My Python Scripts\\snake\\board.png')
+#Movement chnage of the snake
 
 #snake class
 class snake(object):
     def __init__(self,x,y):
         self.x=x
         self.y=y
+        self.width=10
+        self.height=10
         self.score=0
-        self.block=50
-
-    def draw(self,win):
-        pygame.draw.rect(win,(0,128,0),(self.x, self.y, 34,34))
+        self.x_change=0
+        self.y_change=0
 
 
-def drawWin():
-    win.blit(bg,(0,0))
-    slither.draw(win)
-    pygame.display.update()
-    clock.tick(15)
+#Background Color
+win.fill((255,255,255))
+ 
+global slither
+slither=snake(318,253)
+
+
 def gameLoop():
     run=True
     while run:
+        keys=pygame.key.get_pressed()
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 pygame.quit()
                 quit()
-        global slither
-        slither=snake(318,253)
-        keys=pygame.key.get_pressed()
+            if event.type== pygame.KEYDOWN:
+                if event.key==pygame.K_LEFT:
+                    slither.x_change= -10
+                    slither.y_change= 0
+            
+                if pygame.key==pygame.K_RIGHT:
+                    slither.x_change= 10
+                    slither.y_change= 0
 
-        if keys[pygame.K_LEFT]:
-            slither.x= -slither.block
-        
-        if keys[pygame.K_RIGHT]:
-            slither.x+=1
+                if pygame.key==pygame.K_UP:
+                    slither.x_change= 0
+                    slither.y_change= -10
 
-        if keys[pygame.K_UP]:
-            slither.y-=1
+                if pygame.key==pygame.K_DOWN:
+                    slither.x_change= 0
+                    slither.y_change= 10
 
-        if keys[pygame.K_DOWN]:
-            slither.y+=1
-        drawWin()
+        slither.x += slither.x_change
+        slither.y += slither.y_change
+        pygame.draw.rect(win,(0,128,0),[slither.x, slither.y, slither.width, slither.height])
+        pygame.display.update()
+        clock.tick(30)
+
 
 
 gameLoop()

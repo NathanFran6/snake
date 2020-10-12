@@ -1,5 +1,7 @@
 import pygame
 
+import time
+
 pygame.init()
 
 #ScreenXandY
@@ -24,6 +26,7 @@ class snake(object):
         self.x=x
         self.y=y
         self.score=0
+        self.block=50
 
     def draw(self,win):
         pygame.draw.rect(win,(0,128,0),(self.x, self.y, 34,34))
@@ -43,6 +46,19 @@ def gameLoop():
                 quit()
         global slither
         slither=snake(318,253)
+        keys=pygame.key.get_pressed()
+
+        if keys[pygame.K_LEFT]:
+            slither.x= -slither.block
+        
+        if keys[pygame.K_RIGHT]:
+            slither.x+=1
+
+        if keys[pygame.K_UP]:
+            slither.y-=1
+
+        if keys[pygame.K_DOWN]:
+            slither.y+=1
         drawWin()
 
 

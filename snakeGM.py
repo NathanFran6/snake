@@ -56,6 +56,59 @@ class food(object):
             self.x=round(random.randrange(0, Screenwid - snakeBlock) / 10.0) * 10.0 
             self.y=round(random.randrange(0, Screenwid - snakeBlock) / 10.0) * 10.0
 
+def boundary():
+    if slither.x== 0 or slither.x == Screenwid-10:
+        print('Game Over')
+    elif slither.y==0 or slither.y== Screenh-10:
+        print('Game Over')
+
+def gameEnd():
+    end=True
+    while end:
+        #To mkae the start screen go away
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                quit()
+        win.fill((255,255,255))
+        endText=pygame.font.SysFont('goudystout',30,True,False)
+        endGame= endText.render('Game', 1, (255,255,255))
+        win.blit(endGame,(90,90))
+        endText2=pygame.font.SysFont('goudystout',30,True,False)
+        endGame2= endText2.render('Game Over', 1, (255,255,255))
+        win.blit(endGame2,(60,150))
+        
+        button('Play Again',170,190,180,50,startButton2,startButton,215,205,textColor2,textColor,'play')
+        
+        pygame.display.update()
+        clock.tick(15)
+
+def endButton(msg,x,y,w,h,inactive,active,xT,yT,inactiveT,activeT,action=None):
+        #Use location of mouse to track the button
+        mouse= pygame.mouse.get_pos()
+        #Tracks mouse clicks
+        click=pygame.mouse.get_pressed() 
+        #0 is x, 1 is y, 2 is width, 3 is height
+        if x+w> mouse[0] >x and y+h>mouse[1]>y:
+            pygame.draw.rect(win, inactive,(x,y,w,h))
+            #Click[0] is left mouse click
+            if click[0] == 1 and action!= None:
+                if action == 'play':
+                    gameLoop()
+        else:       
+            pygame.draw.rect(win, active,(x,y,w,h))
+
+        buttonText= pygame.font.SysFont('goudystout',15,False,False)
+        buttonType= buttonText.render(msg,1,(activeT))
+        buttonText2= pygame.font.SysFont('goudystout',15,False,False)
+        buttonType2= buttonText2.render(msg,1,(inactiveT))
+        if x+w> mouse[0] >x and y+h>mouse[1] > y:
+            win.blit(buttonType2,(xT,yT))
+        else:
+            win.blit(buttonType,(xT,yT))            
+        buttonText2= pygame.font.SysFont('goudystout',15,False,False)
+        buttonType2= buttonText2.render(msg,1,(inactiveT))
+
 global slither
 slither=snake(Screenwid/2,Screenh/2)
 
@@ -106,10 +159,10 @@ def gameLoop():
         pygame.draw.rect(win,(0,128,0),[slither.x, slither.y, snakeBlock, snakeBlock])
         pygame.draw.rect(win,(0,0,0),[apple.x,apple.y,snakeBlock, snakeBlock])
         apple.score()
+        boundary()
         pygame.display.update() 
         clock.tick(15)
 
 
-
-gameLoop()
+gameEnd()
 pygame.quit()

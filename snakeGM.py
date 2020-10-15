@@ -10,6 +10,13 @@ pygame.init()
 Screenwid= 300
 Screenh=300
 
+#Button Color 
+startButton=(0,0,0)
+startButton2=(0,128,0)
+#Button Text Color
+textColor=(0,128,0)
+textColor2=(0,0,0)
+
 #List of possible locatons for food
 appleX=[10,50,100,150,200,250]
 appleY=[10,50,100,150,200,250]
@@ -58,9 +65,9 @@ class food(object):
 
 def boundary():
     if slither.x== 0 or slither.x == Screenwid-10:
-        print('Game Over')
+        gameEnd()
     elif slither.y==0 or slither.y== Screenh-10:
-        print('Game Over')
+        gameEnd()
 
 def gameEnd():
     end=True
@@ -71,14 +78,14 @@ def gameEnd():
                 pygame.quit()
                 quit()
         win.fill((255,255,255))
-        endText=pygame.font.SysFont('goudystout',30,True,False)
-        endGame= endText.render('Game', 1, (255,255,255))
-        win.blit(endGame,(90,90))
-        endText2=pygame.font.SysFont('goudystout',30,True,False)
-        endGame2= endText2.render('Game Over', 1, (255,255,255))
-        win.blit(endGame2,(60,150))
+        endText=pygame.font.SysFont('courier',38,True,False)
+        endGame= endText.render('Game', 1, (0,0,0))
+        win.blit(endGame,(100,50))
+        endText2=pygame.font.SysFont('courier',38,True,False)
+        endGame2= endText2.render('Over', 1, (0,0,0))
+        win.blit(endGame2,(100,100))
         
-        button('Play Again',170,190,180,50,startButton2,startButton,215,205,textColor2,textColor,'play')
+        endButton('Play Again',60,170,180,50,startButton2,startButton,65,180,textColor2,textColor,'play')
         
         pygame.display.update()
         clock.tick(15)
@@ -98,9 +105,9 @@ def endButton(msg,x,y,w,h,inactive,active,xT,yT,inactiveT,activeT,action=None):
         else:       
             pygame.draw.rect(win, active,(x,y,w,h))
 
-        buttonText= pygame.font.SysFont('goudystout',15,False,False)
+        buttonText= pygame.font.SysFont('courier',28,True,False)
         buttonType= buttonText.render(msg,1,(activeT))
-        buttonText2= pygame.font.SysFont('goudystout',15,False,False)
+        buttonText2= pygame.font.SysFont('courier',28,True,False)
         buttonType2= buttonText2.render(msg,1,(inactiveT))
         if x+w> mouse[0] >x and y+h>mouse[1] > y:
             win.blit(buttonType2,(xT,yT))
@@ -150,7 +157,7 @@ def gameLoop():
 
         for x in snakeMulti[:-1]:
             if x == snakeHead:
-                print('Game Over')
+                gameEnd()
         
         slither.x += slither.x_change
         slither.y += slither.y_change

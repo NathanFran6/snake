@@ -10,12 +10,6 @@ pygame.init()
 Screenwid= 300
 Screenh=300
 
-#Button Color 
-startButton=(0,0,0)
-startButton2=(0,128,0)
-#Button Text Color
-textColor=(0,128,0)
-textColor2=(0,0,0)
 
 #List of possible locatons for food
 appleX=[10,50,100,150,200,250]
@@ -37,7 +31,6 @@ class snake(object):
     def __init__(self,x,y):
         self.x=x
         self.y=y
-        self.score=0
         self.x_change=0
         self.y_change=0
         self.length=1
@@ -64,10 +57,12 @@ class food(object):
             self.y=round(random.randrange(0, Screenwid - snakeBlock) / 10.0) * 10.0
 
 def boundary():
-    if slither.x== 0 or slither.x == Screenwid-10:
+    if slither.x== 0 or slither.x == Screenwid:
         gameEnd()
-    elif slither.y==0 or slither.y== Screenh-10:
+    elif slither.y==0 or slither.y== Screenh:
         gameEnd()
+
+
 
 def gameEnd():
     end=True
@@ -77,44 +72,16 @@ def gameEnd():
             if event.type==pygame.QUIT:
                 pygame.quit()
                 quit()
-        win.fill((255,255,255))
-        endText=pygame.font.SysFont('courier',38,True,False)
-        endGame= endText.render('Game', 1, (0,0,0))
-        win.blit(endGame,(100,50))
-        endText2=pygame.font.SysFont('courier',38,True,False)
-        endGame2= endText2.render('Over', 1, (0,0,0))
-        win.blit(endGame2,(100,100))
-        
-        endButton('Play Again',60,170,180,50,startButton2,startButton,65,180,textColor2,textColor,'play')
+        win.fill((0,128,0))
+        endText=pygame.font.SysFont('courier',65,True,False)
+        endGame= endText.render('Game', 1, (255,255,255))
+        win.blit(endGame,(75,70))
+        endText2=pygame.font.SysFont('courier',65,True,False)
+        endGame2= endText2.render('Over', 1, (255,255,255))
+        win.blit(endGame2,(75,155))
         
         pygame.display.update()
         clock.tick(15)
-
-def endButton(msg,x,y,w,h,inactive,active,xT,yT,inactiveT,activeT,action=None):
-        #Use location of mouse to track the button
-        mouse= pygame.mouse.get_pos()
-        #Tracks mouse clicks
-        click=pygame.mouse.get_pressed() 
-        #0 is x, 1 is y, 2 is width, 3 is height
-        if x+w> mouse[0] >x and y+h>mouse[1]>y:
-            pygame.draw.rect(win, inactive,(x,y,w,h))
-            #Click[0] is left mouse click
-            if click[0] == 1 and action!= None:
-                if action == 'play':
-                    gameLoop()
-        else:       
-            pygame.draw.rect(win, active,(x,y,w,h))
-
-        buttonText= pygame.font.SysFont('courier',28,True,False)
-        buttonType= buttonText.render(msg,1,(activeT))
-        buttonText2= pygame.font.SysFont('courier',28,True,False)
-        buttonType2= buttonText2.render(msg,1,(inactiveT))
-        if x+w> mouse[0] >x and y+h>mouse[1] > y:
-            win.blit(buttonType2,(xT,yT))
-        else:
-            win.blit(buttonType,(xT,yT))            
-        buttonText2= pygame.font.SysFont('goudystout',15,False,False)
-        buttonType2= buttonText2.render(msg,1,(inactiveT))
 
 global slither
 slither=snake(Screenwid/2,Screenh/2)
@@ -148,6 +115,7 @@ def gameLoop():
                 if event.key==pygame.K_DOWN:
                     slither.x_change= 0
                     slither.y_change= 10
+        win.fill((255,255,255))
         snakeHead=[]
         snakeHead.append(slither.x)
         snakeHead.append(slither.y)
@@ -161,7 +129,6 @@ def gameLoop():
         
         slither.x += slither.x_change
         slither.y += slither.y_change
-        win.fill((255,255,255))
         multiSnake(snakeBlock, snakeMulti)
         pygame.draw.rect(win,(0,128,0),[slither.x, slither.y, snakeBlock, snakeBlock])
         pygame.draw.rect(win,(0,0,0),[apple.x,apple.y,snakeBlock, snakeBlock])
@@ -171,5 +138,5 @@ def gameLoop():
         clock.tick(15)
 
 
-gameEnd()
+gameLoop()
 pygame.quit()
